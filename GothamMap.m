@@ -1,15 +1,21 @@
 classdef GothamMap < handle
-    
     properties
         blocks
     end
 
+    properties (Constant)
+        bw = 100; % BLOCK WIDTH
+        bh = 100; % BLOCK HEIGHt
+        nw = 30; % # of blocks in width
+        nh = 150; % # of blocks in height
+    end
+
     methods
         function obj = GothamMap()
-            obj.blocks = [];
-            for x=0:29
-                for y=0:149
-                    obj.blocks = [obj.blocks; Block([x*100 y*100], 15*60)];
+            obj.blocks = Block.empty([GothamMap.nh * GothamMap.nw, 0]);
+            for x=0:(GothamMap.nw-1)
+                for y=0:(GothamMap.nh-1)
+                    obj.blocks(GothamMap.nh*x + y + 1) = Block([x*GothamMap.bw y*GothamMap.bh], 15*60);
                 end
             end
         end
@@ -22,11 +28,30 @@ classdef GothamMap < handle
             obj.resetBlocks();
             blocks = obj.blocks;
         end
-        function update(obj, blocks, drones)
+        function blocks = getBlockRange(obj, x, y, side)
+            minx = round(x/GothamMap.bw);
+            miny = round(y/GothamMap.bh);
+            maxx = round((x+side)/GothamMap.bw);
+            maxy = round((y+side)/GothamMap.bh);
+            blocks = [];
+            for x=minx:maxx
+                for y=miny:maxy
+                    blocks = [blocks, obj.blocks(GothamMap.nh * x + y + 1)];
+                end
+            end
         end
-        function drawBlocks(obj, blocks)
+        function update(map, drones, curr_time)
+            for d=1:length(drones)
+                drone = drones(d);
+                observed = map.getBlockRange(drone.range);
+                for b=1:length(observed)
+                    observed(b).observe(curr_time);
+                end
+            end
+        end
+        function drawBlocks(obj)
             for b=1:length(blocks)
-                blocks(b).draw(100)
+                blocks(b).draw(GothamMap.bw)
             end
         end
         function drawDrones(obj, drones)

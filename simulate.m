@@ -21,7 +21,7 @@ end
 disp('Starting simulation');
 for i=1:3600*24
     strat.stepDrones(drones, dt);
-    map.update(blocks, drones);
+    map.update(drones, i * dt);
     if draw
         clf
         axis([-100 3000 -100 15000]);
