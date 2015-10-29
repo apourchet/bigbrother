@@ -27,7 +27,7 @@ classdef Drone < handle
         end
         function draw(obj, radius)
             pos = [obj.position - radius/2 radius/2 radius/2];
-            rectangle('Position', pos, 'Curvature', [1 1])
+            rectangle('Position', pos, 'Curvature', [1 1], 'FaceColor', 'black')
         end
     end
 end
