@@ -8,10 +8,12 @@ if nargin < 3
     draw = 1;
 end
 
-drones = strat.initDrones();
+map.resetBlocks();
 blocks = map.initBlocks();
+drones = strat.initDrones();
 
 dt = 10;
+endTime = 3600 * 24;
 drawspeed = 10000;
 if draw
     figure('Position', [1000, 0, 300, 1500])
@@ -19,7 +21,7 @@ if draw
 end
 
 disp('Starting simulation');
-for i=1:3600*24
+for i=1:endTime
     strat.stepDrones(drones, dt);
     map.update(drones, i * dt);
     if draw
@@ -29,3 +31,5 @@ for i=1:3600*24
         pause(dt/drawspeed);
     end
 end
+
+map.tickAll(endTime);

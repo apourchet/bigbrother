@@ -36,14 +36,20 @@ classdef GothamMap < handle
             blocks = [];
             for x=minx:maxx
                 for y=miny:maxy
-                    blocks = [blocks, obj.blocks(GothamMap.nh * x + y + 1)];
+                    b = obj.blocks(GothamMap.nh * x + y + 1);
+                    blocks = [blocks, b];
                 end
+            end
+        end
+        function tickAll(map, currTime)
+            for b=1:length(map.blocks)
+                map.blocks(b).tick(currTime);
             end
         end
         function update(map, drones, curr_time)
             for d=1:length(drones)
                 drone = drones(d);
-                observed = map.getBlockRange(drone.range);
+                observed = map.getBlockRange(drone.position(1), drone.position(2), drone.range);
                 for b=1:length(observed)
                     observed(b).observe(curr_time);
                 end
@@ -51,12 +57,12 @@ classdef GothamMap < handle
         end
         function drawBlocks(obj)
             for b=1:length(blocks)
-                blocks(b).draw(GothamMap.bw)
+                blocks(b).draw(GothamMap.bw);
             end
         end
         function drawDrones(obj, drones)
             for d=1:length(drones)
-                drones(d).draw(100)
+                drones(d).draw(100);
             end
         end
     end

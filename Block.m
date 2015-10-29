@@ -24,10 +24,10 @@ classdef Block < handle
                 delta = curr_time - max(block.last_tick, block.last_observed + block.max_unobserved);
                 block.total_unobserved = block.total_unobserved + delta;
             end 
-            block.last_tick = curr_time
+            block.last_tick = curr_time;
         end
         function observe(block, curr_time)
-            block.tick(curr_time)
+            block.tick(curr_time);
             block.last_observed = curr_time;
         end
         function draw(obj, width)
