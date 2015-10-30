@@ -11,23 +11,23 @@ classdef RandomDrone < handle
         function drone = RandomDrone(boundingBox)
             drone.bounds = boundingBox;
             drone.position = floor(rand(1, 2) .* drone.bounds);
-            drone.rechargeTimer = 500 * rand(1);
+            drone.rechargeTimer = 17000 * rand(1);
             drone.observing = 1;
             drone.direction = -1;
             drone.getRandomDirection();   
         end
         function getRandomDirection(drone)
             directions = [];
-            if drone.direction ~= 0 && drone.position(2) < drone.bounds(2)
+            if drone.position(2) < drone.bounds(2)
                 directions = [directions, 0];
             end
-            if drone.direction ~= 2 && drone.position(2) > 0
+            if drone.position(2) > 0
                 directions = [directions, 2];
             end
-            if drone.direction ~= 1 && drone.position(1) < drone.bounds(1)
+            if drone.position(1) < drone.bounds(1)
                 directions = [directions, 1];
             end
-            if drone.direction ~= 3 && drone.position(1) > 0
+            if drone.position(1) > 0
                 directions = [directions, 3];
             end
             dirNum = ceil(rand * length(directions));
@@ -40,18 +40,28 @@ classdef RandomDrone < handle
                 drone.deltaToDest = drone.deltaToDest - 1;
                 if drone.deltaToDest == 0
                     drone.updatePosition();
+                    prevDir = drone.direction;
                     drone.getRandomDirection();
+                    if drone.direction ~= prevDir
+                        drone.drainCharge(dt * 1.5);
+                    end
                 end
             end
         end
+        function drainCharge(drone, dt)
+            drone.rechargeTimer = drone.rechargeTimer + dt;
+        end
+        function recharge(drone, dt)
+            drone.rechargeTimer = drone.rechargeTimer - dt*10;
+        end
         function checkCharge(drone, dt)
             if drone.isObserving()
-                drone.rechargeTimer = drone.rechargeTimer + dt;
+                drone.drainCharge(dt);
                 if drone.rechargeTimer >= 18000
                     drone.observing = 0;
                 end
             else
-                drone.rechargeTimer = drone.rechargeTimer - dt*10;
+                drone.recharge(dt);
                 if drone.rechargeTimer <= 0
                     drone.observing = 1;
                 end

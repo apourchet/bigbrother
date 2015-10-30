@@ -1,13 +1,12 @@
-function [total_drones, total_overdue, max_overdue] = simulate(map, strat)
-tic;
+function [total_drones, total_overdue, max_overdue] = simulate(map, strat, timed)
 % HOWTO
 % m = GothamMap;
 % s = BasicStrategy;
 % simulate(s, m)
 
-if nargin < 3
-    draw = 0;
-end
+if nargin < 3 timed = 1; end
+
+if timed tic; end
 
 intersections = map.initIntersections();
 drones = strat.initDrones(map);
@@ -16,9 +15,9 @@ dt = 10;
 endTime = 3600 * 24;
 drawspeed = 10000;
 
-toc;
 for t=0:dt:endTime
     if mod(100 * t/endTime, 10) == 0
+        if timed toc; end
         disp(sprintf('Progress: %d%%', 100 * t/endTime));
     end
     strat.stepDrones(drones, dt);
@@ -39,5 +38,6 @@ for b=1:length(map.intersections)
 end
 total_overdue = total_overdue/3600;
 max_overdue = max_overdue/3600;
-toc;
+
+if timed toc; end
 
