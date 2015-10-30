@@ -1,19 +1,20 @@
 classdef GothamMap < handle
     properties
         intersections
-    end
-
-    properties (Constant)
-        nw = 6; % # of intersections in width
-        nh = 30; % # of intersections in height
+        bounds
+        nw
+        nh
     end
 
     methods
-        function map = GothamMap()
-            map.intersections = Intersection.empty([GothamMap.nh * GothamMap.nw, 0]);
-            for x=0:(GothamMap.nw-1)
-                for y=0:(GothamMap.nh-1)
-                    ind = GothamMap.nh * x + y + 1;
+        function map = GothamMap(nw, nh)
+            map.nw = nw;
+            map.nh = nh;
+            map.bounds = [nw-1, nh-1];
+            map.intersections = Intersection.empty([nh * nw, 0]);
+            for x=0:(nw-1)
+                for y=0:(nh-1)
+                    ind = nh * x + y + 1;
                     map.intersections(ind) = Intersection([x y], 15*60);
                 end
             end
@@ -24,11 +25,11 @@ classdef GothamMap < handle
             end
         end
         function intersections = initIntersections(map)
-            map.resetintersections();
+            map.resetIntersections();
             intersections = map.intersections;
         end
         function intersection = getIntersection(map, x, y)
-            ind = GothamMap.nh * x + y + 1;
+            ind = map.nh * x + y + 1;
             intersection = map.intersections(ind);
         end
         function tickAll(map, currTime)
@@ -47,7 +48,7 @@ classdef GothamMap < handle
         end
         function drawintersections(map)
             for b=1:length(map.intersections)
-                map.intersections(b).draw(GothamMap.bw);
+                map.intersections(b).draw(bw);
             end
         end
         function drawDrones(map, drones)

@@ -22,7 +22,7 @@ classdef Intersection < handle
         end
         function tick(inter, curr_time)
             if curr_time - inter.last_observed > inter.max_unobserved
-                delta = curr_time - max(inter.last_tick, inter.last_observed + block.max_unobserved);
+                delta = curr_time - max(inter.last_tick, inter.last_observed + inter.max_unobserved);
                 inter.total_unobserved = inter.total_unobserved + delta;
             end 
             inter.last_tick = curr_time;

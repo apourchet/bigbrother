@@ -6,10 +6,10 @@ classdef RandomStrategy < handle
         function strat = RandomStrategy(droneCount)
             strat.droneCount = droneCount;
         end
-        function drones = initDrones(obj)
+        function drones = initDrones(strat, map)
             drones = [];
-            for i=1:obj.droneCount
-                drones = [drones; RandomDrone([3000 15000])];
+            for i=1:strat.droneCount
+                drones = [drones; RandomDrone(map.bounds)];
             end
         end
         function stepDrones(obj, drones, dt)
