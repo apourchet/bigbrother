@@ -9,7 +9,7 @@ if nargin < 3
     draw = 0;
 end
 
-blocks = map.initBlocks();
+blocks = map.initIntersections();
 drones = strat.initDrones();
 
 dt = 10;
