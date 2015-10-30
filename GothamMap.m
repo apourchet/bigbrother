@@ -33,11 +33,15 @@ classdef GothamMap < handle
             miny = round(y/GothamMap.bh);
             maxx = round((x+side)/GothamMap.bw);
             maxy = round((y+side)/GothamMap.bh);
+            minx = max(minx, 0); miny = max(miny, 0);
+            maxx = min(maxx, GothamMap.nw); maxy = min(maxy, GothamMap.nh);
             blocks = [];
             for x=minx:maxx
                 for y=miny:maxy
-                    b = obj.blocks(GothamMap.nh * x + y + 1);
-                    blocks = [blocks, b];
+                    if GothamMap.nh * x + y + 1 <= length(obj.blocks)
+                        b = obj.blocks(GothamMap.nh * x + y + 1);
+                        blocks = [blocks, b];
+                    end
                 end
             end
         end
@@ -49,9 +53,11 @@ classdef GothamMap < handle
         function update(map, drones, curr_time)
             for d=1:length(drones)
                 drone = drones(d);
-                observed = map.getBlockRange(drone.position(1), drone.position(2), drone.range);
-                for b=1:length(observed)
-                    observed(b).observe(curr_time);
+                if drone.isObserving()
+                    observed = map.getBlockRange(drone.position(1), drone.position(2), drone.range);
+                    for b=1:length(observed)
+                        observed(b).observe(curr_time);
+                    end
                 end
             end
         end

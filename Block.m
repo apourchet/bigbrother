@@ -18,6 +18,7 @@ classdef Block < handle
         function reset(obj)
             obj.last_observed = 0;
             obj.total_unobserved = 0;
+            obj.last_tick = 0;
         end
         function tick(block, curr_time)
             if curr_time - block.last_observed > block.max_unobserved
