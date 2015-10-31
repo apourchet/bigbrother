@@ -32,6 +32,28 @@ classdef GothamMap < handle
             ind = map.nh * x + y + 1;
             intersection = map.intersections(ind);
         end
+        function intersections = getNeighbors(map, x, y)
+            if y < map.bounds(2)
+                intersections{1} = map.getIntersection(x, y+1);
+            else
+                intersections{1} = NaN;
+            end
+            if x < map.bounds(1)
+                intersections{2} = map.getIntersection(x+1, y);
+            else
+                intersections{2} = NaN;
+            end
+            if y > 0
+                intersections{3} = map.getIntersection(x, y-1);
+            else
+                intersections{3} = NaN;
+            end
+            if x > 0
+                intersections{4} = map.getIntersection(x-1, y);
+            else
+                intersections{4} = NaN;
+            end
+        end
         function tickAll(map, currTime)
             for b=1:length(map.intersections)
                 map.intersections(b).tick(currTime);

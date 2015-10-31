@@ -20,6 +20,9 @@ classdef Intersection < handle
             inter.total_unobserved = 0;
             inter.last_tick = 0;
         end
+        function weight = urgency(inter, curr_time)
+            weight = curr_time - inter.last_observed;
+        end
         function tick(inter, curr_time)
             if curr_time - inter.last_observed > inter.max_unobserved
                 delta = curr_time - max(inter.last_tick, inter.last_observed + inter.max_unobserved);
