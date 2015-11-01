@@ -9,6 +9,7 @@ classdef GothamMap < handle
 
     methods
         function map = GothamMap(nw, nh)
+            map.curr_time = 0;
             map.nw = nw;
             map.nh = nh;
             map.bounds = [nw-1, nh-1];
@@ -37,24 +38,17 @@ classdef GothamMap < handle
         function intersections = getNeighbors(map, x, y)
             if y < map.bounds(2)
                 intersections{1} = map.getIntersection(x, y+1);
-            else
-                intersections{1} = NaN;
             end
             if x < map.bounds(1)
                 intersections{2} = map.getIntersection(x+1, y);
-            else
-                intersections{2} = NaN;
             end
             if y > 0
                 intersections{3} = map.getIntersection(x, y-1);
-            else
-                intersections{3} = NaN;
             end
             if x > 0
                 intersections{4} = map.getIntersection(x-1, y);
-            else
-                intersections{4} = NaN;
             end
+            intersections{5} = [];
         end
         function tickAll(map, currTime)
             for b=1:length(map.intersections)

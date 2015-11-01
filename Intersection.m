@@ -20,8 +20,8 @@ classdef Intersection < handle
             inter.total_unobserved = 0;
             inter.last_tick = 0;
         end
-        function weight = urgency(inter, curr_time)
-            weight = (curr_time - inter.last_observed)- inter.max_unobserved;
+        function urg = urgency(inter, curr_time)
+            urg = (curr_time - inter.last_observed)- inter.max_unobserved;
         end
         function tick(inter, curr_time)
             if curr_time - inter.last_observed > inter.max_unobserved
