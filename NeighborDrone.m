@@ -15,18 +15,33 @@ classdef NeighborDrone < handle
             drone.observing = 1;
             drone.direction = floor(rand * 4);
         end
-        function step(drone, dt)
+        function step(drone, map, dt)
             drone.checkCharge(dt)
             if drone.isObserving()
                 drone.deltaToDest = drone.deltaToDest - 1;
                 if drone.deltaToDest == 0
                     drone.updatePosition();
                     prevDir = drone.direction;
-                    drone.getRandomDirection();
+                    drone.getNextDirection(curr_time);
                     if drone.direction ~= prevDir
                         drone.drainCharge(dt * 1.5);
                     end
                 end
+            end
+        end
+        function getNextDirection(drone, map)
+            neighbors = map.getNeighbors(drone.position(1), drone.position(2))
+            if ~isempty(neighbors{0})
+                weights{0} = neighbors{0}.urgency(map.curr_time)
+            end
+            if ~isempty(neighbors{1})
+                weights{1} = neighbors{1}.urgency(map.curr_time)
+            end
+            if ~isempty(neighbors{2})
+                weights{2} = neighbors{2}.urgency(map.curr_time)
+            end
+            if ~isempty(neighbors{3})
+                weights{3} = neighbors{3}.urgency(map.curr_time)
             end
         end
         function drainCharge(drone, dt)

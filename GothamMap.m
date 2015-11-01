@@ -4,6 +4,7 @@ classdef GothamMap < handle
         bounds
         nw
         nh
+        curr_time
     end
 
     methods
@@ -20,6 +21,7 @@ classdef GothamMap < handle
             end
         end
         function resetIntersections(map)
+            curr_time = 0;
             for b=1:length(map.intersections)
                 map.intersections(b).reset();
             end
@@ -60,6 +62,7 @@ classdef GothamMap < handle
             end
         end
         function update(map, drones, curr_time)
+            map.curr_time = curr_time;
             for d=1:length(drones)
                 drone = drones(d);
                 if drone.isObserving()

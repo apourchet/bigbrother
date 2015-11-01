@@ -20,7 +20,7 @@ for t=0:dt:endTime
         if timed toc; end
         disp(sprintf('Progress: %d%%', 100 * t/endTime));
     end
-    strat.stepDrones(drones, dt);
+    strat.stepDrones(drones, map, dt);
     map.update(drones, t);
 end
 

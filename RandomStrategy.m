@@ -12,7 +12,7 @@ classdef RandomStrategy < handle
                 drones = [drones; RandomDrone(map.bounds)];
             end
         end
-        function stepDrones(obj, drones, dt)
+        function stepDrones(obj, drones, map, dt)
             for d = 1:length(drones)
                 drones(d).step(dt)
             end

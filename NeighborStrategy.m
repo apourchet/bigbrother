@@ -4,18 +4,18 @@ classdef NeighborStrategy < handle
         droneCount
     end
     methods
-        function strat = RandomStrategy(droneCount)
+        function strat = NeighborStrategy(droneCount)
             strat.droneCount = droneCount;
         end
         function drones = initDrones(strat, map)
             drones = [];
             for i=1:strat.droneCount
-                drones = [drones; RandomDrone(map.bounds)];
+                drones = [drones; NeighborDrone(map.bounds)];
             end
         end
-        function stepDrones(obj, drones, dt)
+        function stepDrones(obj, drones, map, dt)
             for d = 1:length(drones)
-                drones(d).step(dt)
+                drones(d).step(map, dt)
             end
         end
     end
