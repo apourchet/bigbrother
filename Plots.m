@@ -1,15 +1,15 @@
-M = GothamMap(100,15);
-dronecount = [1 2 4 6 8 10 12 14 16 18 20 23 25];
-maxNeighbor = [];
-totalNeighbor = [];
+M = GothamMap(3, 20);
+dronecount =  [1 3 5 7 9 10 12 15 17 18 20 22 24 25 26 28 30];
+maxOverdues = [];
+totalOverdues = [];
 for i = 1:1:length(dronecount)
-    S = NeighborStrategy(dronecount(i));
+    S = GreedyStrategy(dronecount(i));
     [x, y, max] = simulate(M, S);
-    maxNeighbor = [maxNeighbor max];
-    totalNeighbor = [totalNeighbor y];
+    maxOverdues = [maxOverdues max];
+    totalOverdues = [totalOverdues y];
 end
-plot(dronecount, maxNeighbor)
+plot(dronecount, maxOverdues)
 xlabel('max');
 figure
-plot(dronecount, totalNeighbor)
+plot(dronecount, totalOverdues)
 xlabel('total');

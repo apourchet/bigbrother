@@ -19,7 +19,7 @@ classdef GreedyStrategy < handle
             for i=1:length(map.intersections)
                 inter = map.intersections(i);
                 if ~taken(inter.position(1)+1, inter.position(2)+1)
-                    distance = norm(position-inter.position);
+                    distance = 3*abs(inter.position(1) - position(1)) + abs(inter.position(2) - position(2));
                     urgency = inter.urgency(map.curr_time);
                     if distance ~= 0 && urgency/distance > maxWeight
                         maxWeight = urgency/distance;
